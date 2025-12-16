@@ -20,8 +20,7 @@ env = Environment(
     lstrip_blocks=True,
 )
 
-# TODO: rename to base_template
-default_template: Template = env.get_template("error.html")
+base_template: Template = env.get_template("error.html")
 
 
 class ErrorPageParams(TypedDict):
@@ -86,7 +85,7 @@ def render(params: ErrorPageParams,
     :return: The rendered error page as a string.
     '''
     if not template:
-        template = default_template
+        template = base_template
 
     params = {**params}
 
@@ -108,4 +107,4 @@ def render(params: ErrorPageParams,
     return template.render(params=params, *args, **kwargs)
 
 __version__ = "0.1.0"
-__all__ = ['default_template', 'render']
+__all__ = ['base_template', 'render']

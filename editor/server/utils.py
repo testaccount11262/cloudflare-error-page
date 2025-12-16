@@ -4,7 +4,7 @@ from typing import Any
 
 from cloudflare_error_page import (
     ErrorPageParams,
-    default_template as base_template,
+    base_template as base_template,
     render as render_cf_error_page,
 )
 from flask import current_app, request
