@@ -14,8 +14,8 @@ from flask import (
 from jinja2 import Environment, select_autoescape
 
 from cloudflare_error_page import (
-    fill_params as fill_template_params,
-    default_template as cf_template
+    default_template as cf_template,
+    render as render_cf_error_page,
 )
 
 from . import (
@@ -127,14 +127,12 @@ def get(name: str):
             'text': 'CF Error Page Editor',
             'link': request.host_url[:-1] + url_for('editor.index') + f'#from={name}',
         }
-        # Always escape HTML
-        params['what_happened'] = html.escape(params.get('what_happened', '')) # TODO: common render function?
-        params['what_can_i_do'] = html.escape(params.get('what_can_i_do', ''))
         fill_cf_template_params(params)
-        fill_template_params(params)
         sanitize_page_param_links(params)
 
-        return template.render(base=cf_template,
-                               params=params,
-                               url=request.url,
-                               description='Cloudflare error page')
+        return render_cf_error_page(params=params,
+                                    allow_html=False,
+                                    template=template,
+                                    base=cf_template,
+                                    url=request.url,
+                                    description='Cloudflare error page')
