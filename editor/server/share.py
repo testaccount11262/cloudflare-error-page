@@ -65,7 +65,19 @@ def get_rand_name(digits=8):
 def create():
     if len(request.data) > 4096:
         abort(413)
+
+    # Simple CSRF check
+    sec_fetch_site = request.headers.get('Sec-Fetch-Site')
+    if sec_fetch_site is not None and sec_fetch_site != 'same-origin':
+        return jsonify({
+            'status': 'failed',
+            'message': 'CSRF check failed (Sec-Fetch-Site)',
+        }), 403
+
+    # Accessing request.json raises 415 error if Content-Type is not application/json. This also prevents CSRF requests.
+    # See https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/CSRF#avoiding_simple_requests
     params = request.json['parameters']  # throws KeyError
+
     # TODO: strip unused params
     try:
         item = models.Item()
