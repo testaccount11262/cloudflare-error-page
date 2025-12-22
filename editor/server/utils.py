@@ -122,21 +122,23 @@ def render_extended_template(params: ErrorPageParams,
                              *args: Any,
                              **kwargs: Any) -> str:
     fill_cf_template_params(params)
-    description = params.get('what_happened') or 'Cloudflare error page'
-    description = re.sub(r'</?.*?>', '', description).strip()
+    description = params.get('what_happened') or 'There is an internal server error on Cloudflare\'s network.'
+    description = re.sub(r'<\/?.*?>', '', description).strip()
 
-    page_image_id = 'ok'
+    status = 'ok'
     cf_status_obj = params.get('cloudflare_status')
     if cf_status_obj:
         cf_status = cf_status_obj.get('status')
         if cf_status == 'error':
-            page_image_id = 'error'
-    page_image_url = f'https://virt.moe/cferr/editor/assets/icon-{page_image_id}-large.png'
+            status = 'error'
+    page_icon_url = current_app.config.get('PAGE_ICON_URL', '').replace('{status}', status)
+    page_icon_type = current_app.config.get('PAGE_ICON_TYPE')
+    page_image_url = current_app.config.get('PAGE_IMAGE_URL', '').replace('{status}', status)
     return render_cf_error_page(params=params,
                                 template=template,
                                 base=base_template,
-                                page_icon_url=current_app.config.get('PAGE_ICON_URL'),
-                                page_icon_type=current_app.config.get('PAGE_ICON_TYPE'),
+                                page_icon_url=page_icon_url,
+                                page_icon_type=page_icon_type,
                                 page_url=request.url,
                                 page_description=description,
                                 page_image_url=page_image_url,
