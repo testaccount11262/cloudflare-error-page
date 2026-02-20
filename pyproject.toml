@@ -26,7 +26,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/donlon/cloudflare-error-page"
+Homepage = "https://github.com/testaccount11262/cloudflare-error-page"
 
 [tool.hatch.build]
 include = [
