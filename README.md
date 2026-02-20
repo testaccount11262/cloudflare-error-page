@@ -19,11 +19,8 @@ Here's an online editor to create customized error pages and example server apps
 Install `cloudflare-error-page` using pip.
 
 ``` Bash
-# Install from PyPI
-pip install cloudflare-error-page
-
-# Or, install the latest version from this repo
-pip install git+https://github.com/donlon/cloudflare-error-page.git
+# Install the latest version from this repo
+pip install git+https://github.com/testaccount11262/cloudflare-error-page.git
 ```
 
 Then an error page can be generated using the `render` function provided by the package. ([example.py](examples/example.py))
